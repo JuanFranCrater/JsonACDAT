@@ -68,6 +68,7 @@ public class ContactosActivity extends AppCompatActivity implements View.OnClick
                     mostrar();
                     progreso.dismiss();
                 } catch (JSONException e) {
+                    Toast.makeText(ContactosActivity.this,"Error en JSON/GSON",Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                     progreso.dismiss();
                 }
@@ -75,8 +76,51 @@ public class ContactosActivity extends AppCompatActivity implements View.OnClick
             }
 
             @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                progreso.dismiss();
+                StringBuilder message = new StringBuilder();
+                message.append("Fallo en la descarga");
+                if(throwable!=null)
+                {
+                    message.append(": "+statusCode+"; "+throwable.getMessage());
+                    if(errorResponse!=null)
+                    {
+                        message.append("\n"+errorResponse.toString());
+                    }
+                }
+                Toast.makeText(ContactosActivity.this,message.toString(),Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                progreso.dismiss();
+                StringBuilder message = new StringBuilder();
+                message.append("Fallo en la descarga");
+                if(throwable!=null)
+                {
+                    message.append(": "+statusCode+"; "+throwable.getMessage());
+                    if(responseString!=null)
+                    {
+                        message.append("\n"+responseString.toString());
+                    }
+                }
+                Toast.makeText(ContactosActivity.this,message.toString(),Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                 progreso.dismiss();
+                StringBuilder message = new StringBuilder();
+                message.append("Fallo en la descarga");
+                if(throwable!=null)
+                {
+                    message.append(": "+statusCode+"; "+throwable.getMessage());
+                    if(errorResponse!=null)
+                    {
+                        message.append("\n"+errorResponse.toString());
+                    }
+                }
+                Toast.makeText(ContactosActivity.this,message.toString(),Toast.LENGTH_SHORT).show();
             }
         });
     }
